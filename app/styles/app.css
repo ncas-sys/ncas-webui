@@ -193,6 +193,12 @@ body {
   filter: blur(5px);
 }
 .interface-main-content ul.button-container {
+  max-width: 400px;
+  -ms-transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  left: 50%;
+  position: relative;
   display: flex;
   display: -webkit-flex;
   list-style: none;
