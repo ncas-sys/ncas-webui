@@ -94,11 +94,12 @@ body {
 }
 .item-options {
   position: fixed;
-  left: 30px;
-  right: 30px;
+  left: 50%;
+  margin-left: -150px;
   height: 300px;
+  width: 300px;
   top: 50%;
-  margin-top: -120px;
+  margin-top: -150px;
   z-index: 100000;
   background-color: #4D4D69;
   border: 1px solid #37344B;
