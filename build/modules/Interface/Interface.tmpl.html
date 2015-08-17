@@ -1,29 +1,29 @@
 
-<div class="interface-container">
-  <div ng-class="{blur: InterfaceCtrl.showOptions==true}" class="interface-title">
+<div ng-class="{blur: InterfaceCtrl.showOptions==true}" class="interface-container">
+  <div class="interface-title">
     <div class="status-circle {{InterfaceCtrl.status}}"></div><span>nCAS Web UI</span>
   </div>
-  <div ng-class="{blur: InterfaceCtrl.showOptions==true}" class="interface-main-content">
+  <div class="interface-main-content">
     <ul class="button-container">
       <li ng-repeat="(k,v) in InterfaceCtrl.items" ng-click="InterfaceCtrl.openItemOptions(k)" class="{{v.class}}">
         <div class="content">
           <div class="title">{{v.title}}</div>
           <div class="icon"><i class="{{v.icon}}"></i></div>
-          <div class="status">{{v.status}}</div>
+          <div ng-if="v.key!='lighting'" class="status">{{v.status}}</div>
         </div>
       </li>
     </ul>
   </div>
-  <div ng-class="{show: InterfaceCtrl.showOptions==true}" class="item-options">
-    <div class="topTitle">{{InterfaceCtrl.optionsTitle}}</div>
-    <div ng-click="InterfaceCtrl.showOptions=false" class="bottomButton">Close</div>
-    <div id="itemOptionsList" class="optionsList">
-      <ul>
-        <li ng-repeat="(k, opt) in InterfaceCtrl.options" ng-click="InterfaceCtrl.sendMsg(opt)">
-          <div class="icon"><i class="{{opt.icon}}"></i></div>
-          <div class="title">{{opt.title}}</div>
-        </li>
-      </ul>
-    </div>
+</div>
+<div ng-class="{show: InterfaceCtrl.showOptions==true}" class="item-options">
+  <div class="topTitle">{{InterfaceCtrl.optionsTitle}}</div>
+  <div ng-click="InterfaceCtrl.showOptions=false" class="bottomButton">Close</div>
+  <div id="itemOptionsList" class="optionsList">
+    <ul>
+      <li ng-repeat="(k, opt) in InterfaceCtrl.options" ng-click="InterfaceCtrl.sendMsg(opt)">
+        <div class="icon"><i class="{{opt.icon}}"></i></div>
+        <div class="title">{{opt.title}}</div>
+      </li>
+    </ul>
   </div>
 </div>
