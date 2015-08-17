@@ -1,21 +1,21 @@
-div(class="interface-container")
-	div(class="interface-title" ng-class="{blur: InterfaceCtrl.showOptions==true}")
+div(class="interface-container" ng-class="{blur: InterfaceCtrl.showOptions==true}")
+	div(class="interface-title")
 		div(class="status-circle" class="{{InterfaceCtrl.status}}")
 		span nCAS Web UI
-	div(class="interface-main-content" ng-class="{blur: InterfaceCtrl.showOptions==true}")
+	div(class="interface-main-content")
 			ul(class="button-container")
 				li(ng-repeat="(k,v) in InterfaceCtrl.items" class="{{v.class}}" ng-click="InterfaceCtrl.openItemOptions(k)")
 					div(class="content")
 						div(class="title") {{v.title}}
 						div(class="icon")
 							i(class="{{v.icon}}")
-						div(class="status") {{v.status}}
-	div(class="item-options" ng-class="{show: InterfaceCtrl.showOptions==true}")
-		div(class="topTitle") {{InterfaceCtrl.optionsTitle}}
-		div(class="bottomButton" ng-click="InterfaceCtrl.showOptions=false") Close
-		div(class="optionsList" id="itemOptionsList")
-			ul
-				li(ng-repeat="(k, opt) in InterfaceCtrl.options" ng-click="InterfaceCtrl.sendMsg(opt)")
-					div(class="icon")
-						i(class="{{opt.icon}}")
-					div(class="title") {{opt.title}}
+						div(class="status" ng-if="v.key!='lighting'") {{v.status}}
+div(class="item-options" ng-class="{show: InterfaceCtrl.showOptions==true}")
+	div(class="topTitle") {{InterfaceCtrl.optionsTitle}}
+	div(class="bottomButton" ng-click="InterfaceCtrl.showOptions=false") Close
+	div(class="optionsList" id="itemOptionsList")
+		ul
+			li(ng-repeat="(k, opt) in InterfaceCtrl.options" ng-click="InterfaceCtrl.sendMsg(opt)")
+				div(class="icon")
+					i(class="{{opt.icon}}")
+				div(class="title") {{opt.title}}

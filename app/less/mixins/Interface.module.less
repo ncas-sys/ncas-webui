@@ -1,3 +1,33 @@
+.interface-container.blur{
+	-webkit-filter: blur(5px);
+	-moz-filter: blur(5px);
+	-o-filter: blur(5px);
+	-ms-filter: blur(5px);
+	filter: blur(5px);
+
+}
+@media (width: 480px) and (height: 320px){
+	body{
+		.interface-title{
+			display: none;
+		}
+		.interface-main-content{
+			margin-top: 0px !important;
+			ul.button-container{
+				width: 100%;
+				max-width: 480px;
+				li{
+					width: 33%;
+					.content{
+						.icon{
+							font-size: 30px;
+						}
+					}
+				}
+			}
+		}
+	}
+}
 .interface-title{
 	position: fixed;
 	left: 0;
@@ -10,13 +40,6 @@
 	font-size: 1.2em;
 	color: #fff;
 	z-index: 1000;
-	&.blur{
-		-webkit-filter: blur(5px);
-		-moz-filter: blur(5px);
-		-o-filter: blur(5px);
-		-ms-filter: blur(5px);
-		filter: blur(5px);
-	}
 	.status-circle{
 		position: absolute;
 		right: 15px;
@@ -36,14 +59,18 @@
 		}
 	}
 }
+
+
+
+
 .item-options{
 	position: fixed;
 	left: 50%;
 	margin-left: -150px;
-	height: 300px;
+	height: 400px;
 	width: 300px;
 	top: 50%;
-	margin-top: -150px;
+	margin-top: -200px;
 	z-index: 100000;
 	background-color: #4D4D69;
 	border: 1px solid #37344B;
@@ -82,6 +109,7 @@
 		bottom: 60px;
 		top: 60px;
 		color: #fff;
+		overflow: hidden;
 		ul{
 			list-style: none;
 			margin: 0;
@@ -118,13 +146,6 @@
 }
 .interface-main-content{
 	margin-top: 50px;
-	&.blur{
-		-webkit-filter: blur(5px);
-		-moz-filter: blur(5px);
-		-o-filter: blur(5px);
-		-ms-filter: blur(5px);
-		filter: blur(5px);
-	}
 	ul.button-container{
 		max-width: 400px;
 		-ms-transform: translateX(-50%);

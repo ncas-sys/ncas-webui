@@ -43,6 +43,31 @@ body {
   font-size: 12pt;
   font-family: Helvetica;
 }
+.interface-container.blur {
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
+}
+@media (width: 480px) and (height: 320px) {
+  body .interface-title {
+    display: none;
+  }
+  body .interface-main-content {
+    margin-top: 0px !important;
+  }
+  body .interface-main-content ul.button-container {
+    width: 100%;
+    max-width: 480px;
+  }
+  body .interface-main-content ul.button-container li {
+    width: 33%;
+  }
+  body .interface-main-content ul.button-container li .content .icon {
+    font-size: 30px;
+  }
+}
 .interface-title {
   position: fixed;
   left: 0;
@@ -55,13 +80,6 @@ body {
   font-size: 1.2em;
   color: #fff;
   z-index: 1000;
-}
-.interface-title.blur {
-  -webkit-filter: blur(5px);
-  -moz-filter: blur(5px);
-  -o-filter: blur(5px);
-  -ms-filter: blur(5px);
-  filter: blur(5px);
 }
 .interface-title .status-circle {
   position: absolute;
@@ -96,10 +114,10 @@ body {
   position: fixed;
   left: 50%;
   margin-left: -150px;
-  height: 300px;
+  height: 400px;
   width: 300px;
   top: 50%;
-  margin-top: -150px;
+  margin-top: -200px;
   z-index: 100000;
   background-color: #4D4D69;
   border: 1px solid #37344B;
@@ -150,6 +168,7 @@ body {
   bottom: 60px;
   top: 60px;
   color: #fff;
+  overflow: hidden;
 }
 .item-options .optionsList ul {
   list-style: none;
@@ -185,13 +204,6 @@ body {
 }
 .interface-main-content {
   margin-top: 50px;
-}
-.interface-main-content.blur {
-  -webkit-filter: blur(5px);
-  -moz-filter: blur(5px);
-  -o-filter: blur(5px);
-  -ms-filter: blur(5px);
-  filter: blur(5px);
 }
 .interface-main-content ul.button-container {
   max-width: 400px;

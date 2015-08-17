@@ -86,6 +86,35 @@ module.exports = function($rootScope, ConnectionService){
 					'icon': 'fa fa-power-off'
 				}
 			]
+		},
+		{
+			key: 'lighting',
+			icon: 'fa fa-sliders ',
+			title: 'Lighting Scenes',
+			status: 'not connected',
+			class: "none",
+			options: [
+				{
+					'title': 'House Lights',
+					'emit': 'LightingScene1',
+					'icon': 'fa fa-sliders'
+				},
+				{
+					'title': 'Stage Wash',
+					'emit': 'LightingScene2',
+					'icon': 'fa fa-sliders'
+				},
+				{
+					'title': 'Black Out',
+					'emit': 'LightingScene3',
+					'icon': 'fa fa-sliders'
+				},
+				{
+					'title': 'Conference',
+					'emit': 'LightingScene6',
+					'icon': 'fa fa-sliders'
+				}
+			]
 		}
 	]
 
