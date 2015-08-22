@@ -18,4 +18,4 @@ var Interface = angular.module('App.Interface', [])
 	;
 }])
 
-.controller('InterfaceController', ['$rootScope', 'ConnectionService', InterfaceController])
+.controller('InterfaceController', ['$rootScope', 'ConnectionService', '$timeout', InterfaceController])

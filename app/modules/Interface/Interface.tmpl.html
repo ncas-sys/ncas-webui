@@ -1,28 +1,145 @@
 
-<div ng-class="{blur: InterfaceCtrl.showOptions==true}" class="interface-container">
-  <div class="interface-title">
-    <div class="status-circle {{InterfaceCtrl.status}}"></div><span>nCAS Web UI</span>
+<div class="interface-container">
+  <div ng-show="InterfaceCtrl.states.connection=='none' || InterfaceCtrl.states.connection==null || InterfaceCtrl.states.connection=='offline' || InterfaceCtrl.states.connection=='detached'" class="interface-connection-lost">
+    <div class="stripe">Connection Lost</div>
   </div>
-  <div class="interface-main-content">
-    <ul class="button-container">
-      <li ng-repeat="(k,v) in InterfaceCtrl.items" ng-click="InterfaceCtrl.openItemOptions(k)" class="{{v.class}}">
-        <div class="content">
-          <div class="title">{{v.title}}</div>
-          <div class="icon"><i class="{{v.icon}}"></i></div>
-          <div ng-if="v.key!='lighting'" class="status">{{v.status}}</div>
-        </div>
+  <div ng-show="InterfaceCtrl.showError!=null" class="interface-error">
+    <div class="stripe">{{InterfaceCtrl.showError}}</div>
+  </div>
+  <div ng-show="InterfaceCtrl.showConfirm==true" class="interface-confirm">
+    <div class="title">Are you sure?</div>
+    <div ng-click="InterfaceCtrl.confirmAction()" class="button confirm">Yes</div>
+    <div ng-click="InterfaceCtrl.cancelAction()" class="button cancel">Cancel</div>
+  </div>
+  <div ng-if="InterfaceCtrl.auth=='none'" class="interface-unauth-dashboard">
+    <ul ng-class="{lockedscreen:InterfaceCtrl.locked==true}" ng-click="InterfaceCtrl.authShower()" class="statuses right">
+      <li ng-class="{on:InterfaceCtrl.states.domes==1, off:InterfaceCtrl.states.domes==0}"><i class="fa fa-lightbulb-o"></i><span>Domes</span></li>
+      <li ng-class="{on:InterfaceCtrl.states.sweeps==1, off:InterfaceCtrl.states.sweeps==0}"><i class="fa fa-asterisk"></i><span>Fans</span></li>
+      <li ng-class="{on:InterfaceCtrl.states.emo==1, off:InterfaceCtrl.states.emo==0}"><i class="fa fa-power-off"></i><span>Emo</span></li>
+    </ul>
+    <ul ng-class="{lockedscreen:InterfaceCtrl.locked==true}" ng-click="InterfaceCtrl.authShower()" class="statuses left">
+      <li ng-class="{on:InterfaceCtrl.states.beams==1, off:InterfaceCtrl.states.beams==0}"><i class="fa fa-fire-extinguisher"></i><span>Beams</span></li>
+      <li ng-class="{on:InterfaceCtrl.states.heaters==1, off:InterfaceCtrl.states.heaters==0}"><i class="fa fa-fire"></i><span>Heaters</span></li>
+      <li ng-class="{on:InterfaceCtrl.states.extractors==1, off:InterfaceCtrl.states.extractors==0}"><i class="fa fa-arrow-up"></i><span>Extractors</span></li>
+    </ul>
+    <div ng-if="InterfaceCtrl.showAuth==true &amp;&amp; InterfaceCtrl.locked!=true" class="authContainer">
+      <div ng-click="InterfaceCtrl.authHider()" class="authHider left"></div>
+      <div ng-click="InterfaceCtrl.authHider()" class="authHider right"></div>
+      <ul ng-class="{error: InterfaceCtrl.CodeError}" class="password-entered">
+        <li ng-class="{star: InterfaceCtrl.enteredPassword.length&gt;=1}"></li>
+        <li ng-class="{star: InterfaceCtrl.enteredPassword.length&gt;=2}"></li>
+        <li ng-class="{star: InterfaceCtrl.enteredPassword.length&gt;=3}"></li>
+        <li ng-class="{star: InterfaceCtrl.enteredPassword.length&gt;=4}"></li>
+      </ul>
+      <ul class="password">
+        <li ng-click="InterfaceCtrl.passwordEntry(1)" ng-class="{highlight:InterfaceCtrl.highlight.password1==true}">1</li>
+        <li ng-click="InterfaceCtrl.passwordEntry(2)" ng-class="{highlight:InterfaceCtrl.highlight.password2==true}">2</li>
+        <li ng-click="InterfaceCtrl.passwordEntry(3)" ng-class="{highlight:InterfaceCtrl.highlight.password3==true}">3</li>
+        <li ng-click="InterfaceCtrl.passwordEntry(4)" ng-class="{highlight:InterfaceCtrl.highlight.password4==true}">4</li>
+        <li ng-click="InterfaceCtrl.passwordEntry(5)" ng-class="{highlight:InterfaceCtrl.highlight.password5==true}">5</li>
+        <li ng-click="InterfaceCtrl.passwordEntry(6)" ng-class="{highlight:InterfaceCtrl.highlight.password6==true}">6</li>
+        <li ng-click="InterfaceCtrl.passwordEntry(7)" ng-class="{highlight:InterfaceCtrl.highlight.password7==true}">7</li>
+        <li ng-click="InterfaceCtrl.passwordEntry(8)" ng-class="{highlight:InterfaceCtrl.highlight.password8==true}">8</li>
+        <li ng-click="InterfaceCtrl.passwordEntry(9)" ng-class="{highlight:InterfaceCtrl.highlight.password9==true}">9</li>
+      </ul>
+      <div ng-class="{show:InterfaceCtrl.locked==true}" class="interface-locked">
+        <div class="text">Panel Locked</div>
+      </div>
+    </div>
+  </div>
+  <div ng-if="InterfaceCtrl.auth!='none' &amp;&amp; InterfaceCtrl.showMacros==false &amp;&amp; InterfaceCtrl.showLightingPresets==false" class="interface-auth-dashboard">
+    <ul class="main-menu"><span> 
+        <li ng-class="{on:InterfaceCtrl.states.sweeps==1, off:InterfaceCtrl.states.sweeps==0}" ng-click="InterfaceCtrl.Command('SweepsSwitch', 'sweeps')"><i class="fa fa-asterisk"></i>
+          <div ng-if="InterfaceCtrl.states.sweeps!=null">Turn Sweeps<span ng-show="InterfaceCtrl.states.sweeps==0">&nbsp;On</span><span ng-show="InterfaceCtrl.states.sweeps==1">&nbsp;Off</span></div>
+          <div ng-if="InterfaceCtrl.states.sweeps==null"><span class="notconnected">sweeps not connected</span></div>
+        </li>
+        <li ng-class="{on:InterfaceCtrl.states.domes==1, off:InterfaceCtrl.states.domes==0}" ng-click="InterfaceCtrl.Command('DomesSwitch', 'domes')"><i class="fa fa-lightbulb-o"></i>
+          <div ng-if="InterfaceCtrl.states.domes!=null">Turn Domes<span ng-show="InterfaceCtrl.states.domes==0">&nbsp;On</span><span ng-show="InterfaceCtrl.states.domes==1">&nbsp;Off</span></div>
+          <div ng-if="InterfaceCtrl.states.domes==null"><span class="notconnected">domes not connected</span></div>
+        </li>
+        <li ng-class="{on:InterfaceCtrl.states.heaters==1, off:InterfaceCtrl.states.heaters==0}" ng-click="InterfaceCtrl.Command('HeatersSwitch', 'heaters')"><i class="fa fa-fire"></i>
+          <div ng-if="InterfaceCtrl.states.heaters!=null">Turn Heaters<span ng-show="InterfaceCtrl.states.heaters==0">&nbsp;On</span><span ng-show="InterfaceCtrl.states.heaters==1">&nbsp;Off</span></div>
+          <div ng-if="InterfaceCtrl.states.heaters==null"><span class="notconnected">heaters not connected</span></div>
+        </li></span><span ng-if="InterfaceCtrl.auth=='admin'">
+        <li ng-class="{on:InterfaceCtrl.states.extractors==1, off:InterfaceCtrl.states.extractors==0}" ng-click="InterfaceCtrl.Command('ExtractorsSwitch', 'extractors')"><i class="fa fa-arrow-up"></i>
+          <div ng-if="InterfaceCtrl.states.extractors!=null">Turn Extractors<span ng-show="InterfaceCtrl.states.extractors==0">&nbsp;On</span><span ng-show="InterfaceCtrl.states.extractors==1">&nbsp;Off</span></div>
+          <div ng-if="InterfaceCtrl.states.extractors==null"><span class="notconnected">extractors not connected</span></div>
+        </li>
+        <li ng-class="{on:InterfaceCtrl.states.beams==1, off:InterfaceCtrl.states.beams==0}" ng-click="InterfaceCtrl.Command('BeamsSwitch', 'beams')"><i class="fa fa-fire-extinguisher"></i>
+          <div ng-if="InterfaceCtrl.states.beams!=null">Turn Beams<span ng-show="InterfaceCtrl.states.beams==0">&nbsp;On</span><span ng-show="InterfaceCtrl.states.beams==1">&nbsp;Off</span></div>
+          <div ng-if="InterfaceCtrl.states.beams==null"><span class="notconnected">beams not connected</span></div>
+        </li>
+        <li ng-class="{on:InterfaceCtrl.states.emo==1, off:InterfaceCtrl.states.emo==0}" ng-click="InterfaceCtrl.Command('EmoSwitch', 'emo')"><i class="fa fa-power-off"></i>
+          <div ng-if="InterfaceCtrl.states.emo!=null">Turn Emo<span ng-show="InterfaceCtrl.states.emo==0">&nbsp;On</span><span ng-show="InterfaceCtrl.states.emo==1">&nbsp;Off</span></div>
+          <div ng-if="InterfaceCtrl.states.emo==null"><span class="notconnected">emo not connected</span></div>
+        </li>
+        <li ng-click="InterfaceCtrl.showMacros=true"><i class="fa fa-safari"></i>
+          <div>Macros</div>
+        </li>
+        <li ng-click="InterfaceCtrl.showLightingPresets=true"><i class="fa fa-hand-lizard-o"></i>
+          <div>Lighting Presets</div>
+        </li>
+        <li ng-click="InterfaceCtrl.logOut()"><i class="fa fa-lock"></i>
+          <div>Lock</div>
+        </li></span><span ng-if="InterfaceCtrl.auth=='user'">
+        <li ng-click="InterfaceCtrl.Command('LightingScene4', null)"><i>1</i>
+          <div>Bluey Purpley</div>
+        </li>
+        <li ng-click="InterfaceCtrl.Command('LightingScene2', null)"><i class="fa fa-male"></i>
+          <div>Walk Through</div>
+        </li>
+        <li ng-click="InterfaceCtrl.Command('LightingScene1', null)"><i class="fa fa-circle"></i>
+          <div>Blackout</div>
+        </li>
+        <li></li>
+        <li></li>
+        <li ng-click="InterfaceCtrl.logOut()"><i class="fa fa-lock"></i>
+          <div>Lock</div>
+        </li></span></ul>
+  </div>
+  <div ng-if="InterfaceCtrl.showMacros!=false" class="interface-macro-dashboard">
+    <ul class="main-menu">
+      <li ng-click="InterfaceCtrl.Command('ChurchOn', null)"><i class="fa fa-lightbulb-o"></i>
+        <div>All On</div>
+      </li>
+      <li ng-click="InterfaceCtrl.Command('ChurchOff', null)"><i class="fa fa-lightbulb-o"></i>
+        <div>All Off</div>
+      </li>
+      <li ng-click="InterfaceCtrl.Command('FansOn', null)"><i class="fa fa-lightbulb-o"></i>
+        <div>Fans On</div>
+      </li>
+      <li ng-click="InterfaceCtrl.Command('FansOff', null)"><i class="fa fa-lightbulb-o"></i>
+        <div>Fans Off</div>
+      </li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li ng-click="InterfaceCtrl.showMacros=false"><i class="fa fa-home"></i>
+        <div>Back</div>
       </li>
     </ul>
   </div>
-</div>
-<div ng-class="{show: InterfaceCtrl.showOptions==true}" class="item-options">
-  <div class="topTitle">{{InterfaceCtrl.optionsTitle}}</div>
-  <div ng-click="InterfaceCtrl.showOptions=false" class="bottomButton">Close</div>
-  <div id="itemOptionsList" class="optionsList">
-    <ul>
-      <li ng-repeat="(k, opt) in InterfaceCtrl.options" ng-click="InterfaceCtrl.sendMsg(opt)">
-        <div class="icon"><i class="{{opt.icon}}"></i></div>
-        <div class="title">{{opt.title}}</div>
+  <div ng-if="InterfaceCtrl.showLightingPresets!=false" class="interface-lighting-dashboard">
+    <ul class="main-menu">
+      <li ng-click="InterfaceCtrl.Command('LightingScene1', null)"><i class="fa fa-lightbulb-o"></i>
+        <div>All Off</div>
+      </li>
+      <li ng-click="InterfaceCtrl.Command('LightingScene2', null)"><i class="fa fa-lightbulb-o"></i>
+        <div>Walk Through</div>
+      </li>
+      <li ng-click="InterfaceCtrl.Command('LightingScene3', null)"><i class="fa fa-lightbulb-o"></i>
+        <div>Back Light</div>
+      </li>
+      <li ng-click="InterfaceCtrl.Command('LightingScene4', null)"><i class="fa fa-lightbulb-o"></i>
+        <div>Bluey Purpley</div>
+      </li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li ng-click="InterfaceCtrl.showLightingPresets=false"><i class="fa fa-home"></i>
+        <div>Back</div>
       </li>
     </ul>
   </div>

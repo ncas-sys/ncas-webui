@@ -1,15 +1,38 @@
-module.exports = function($rootScope, ConnectionService){
-	var Ps = require('perfect-scrollbar');
-	var itemOptionsList = document.getElementById('itemOptionsList');
-	Ps.initialize(itemOptionsList, {
-		swipePropagation: false,
-		suppressScrollX: true
-	});
+module.exports = function($rootScope, ConnectionService, $timeout){
+	
 	InterfaceCtrl = this;
-	InterfaceCtrl.status = 'offline';
-	InterfaceCtrl.showOptions = false;
-	InterfaceCtrl.options = [];
-	InterfaceCtrl.optionsTitle = null;
+	InterfaceCtrl.locked = false;
+	InterfaceCtrl.auth = 'none';
+	InterfaceCtrl.enteredPassword = '';
+	InterfaceCtrl.halt = false;
+	InterfaceCtrl.showAuth = false;
+	InterfaceCtrl.CodeError = false;
+	InterfaceCtrl.showError = null;
+	InterfaceCtrl.showMacros = false;
+	InterfaceCtrl.showLightingPresets = false;
+
+	InterfaceCtrl.confirmCallback = null;
+	InterfaceCtrl.highlight = {
+		password1: false
+	}
+
+	InterfaceCtrl.states = {
+		connection: null,
+		auditTemp: null,
+		domes: null,
+		sweeps: null,
+		emo: null,
+		heaters: null,
+		beams: null,
+		projectorPower: null,
+		projectorShutter: null,
+		extractors: null,
+		lightingScene: null
+	}
+
+
+
+
 	InterfaceCtrl.items = [
 		{
 			key: 'domes',
@@ -117,46 +140,131 @@ module.exports = function($rootScope, ConnectionService){
 			]
 		}
 	]
+	
 
-	InterfaceCtrl.updateMyStatus = function(newStatus){
-		InterfaceCtrl.status = newStatus
-		$rootScope.$apply();
-	}
-	InterfaceCtrl.updateItemStatus = function(obj){
-		angular.forEach(InterfaceCtrl.items, function(item, i){
-			if(item.key==obj.node){
-				if(obj.value==1 || obj.value=='On' || obj.value=='ON'){
-					InterfaceCtrl.items[i].class='on'
-					InterfaceCtrl.items[i].status = 'On'
-				}else if(obj.value==0 || obj.value=='Off' || obj.value=='OFF'){
-					InterfaceCtrl.items[i].class='off'
-					InterfaceCtrl.items[i].status = 'Off'
-				}
-				$rootScope.$apply()
+	InterfaceCtrl.passwordEntry = function(number){
+		if(!InterfaceCtrl.halt){
+			InterfaceCtrl.highlight['password' + number] = true;
+			InterfaceCtrl.enteredPassword = InterfaceCtrl.enteredPassword + number;
+			if(InterfaceCtrl.enteredPassword.length==4){
+				InterfaceCtrl.halt = true;
+				var password = angular.copy(InterfaceCtrl.enteredPassword);
+				ConnectionService.emit('ToMaster', {
+					event: 'code',
+					load: password
+				})
+				$timeout(function(){
+					InterfaceCtrl.enteredPassword = '';
+				}, 1000);	
 			}
-		})
+			$timeout(function(){
+				InterfaceCtrl.highlight['password' + number] = false;
+			}, 200);
+		}
 	}
 
-	InterfaceCtrl.openItemOptions = function(itemKey){
-		var item = InterfaceCtrl.items[itemKey]
-		InterfaceCtrl.showOptions = true;
-		InterfaceCtrl.options = item.options
-		InterfaceCtrl.optionsTitle = item.title;
+	InterfaceCtrl.authShower = function(){
+		if(InterfaceCtrl.locked!=true){
+			InterfaceCtrl.showAuth = true;
+		}
+	}
+	InterfaceCtrl.authHider = function(){
+		InterfaceCtrl.showAuth = false;
+		InterfaceCtrl.enteredPassword = '';
 	}
 
-	InterfaceCtrl.sendMsg = function(opt){
-		opt.type='command';
-		InterfaceCtrl.showOptions = false;
-		ConnectionService.sendMsg(opt);
+	InterfaceCtrl.logOut = function(){
+		InterfaceCtrl.auth = 'none';
+		ConnectionService.emit('ToMaster', {
+			event: 'LogOut'
+		});
+	}
+
+	InterfaceCtrl.Command = function(command, node){
+		if(InterfaceCtrl.states[node]!=null || node==null){
+			InterfaceCtrl.showConfirm = true;
+			InterfaceCtrl.confirmCallback = function(){
+				ConnectionService.emit('ToMaster', {
+					event: 'command',
+					load: command
+				})
+			}
+		}
+	}
+	InterfaceCtrl.confirmAction = function(){
+		InterfaceCtrl.confirmCallback();
+		InterfaceCtrl.showConfirm = false;
+		InterfaceCtrl.confirmCallback = null;
+	}
+	InterfaceCtrl.cancelAction = function(){
+		InterfaceCtrl.showConfirm = false;
+		InterfaceCtrl.confirmCallback = null;
 	}
 
 
 	$rootScope.$on('UpdateMyStatus', function(event, stat){
-		InterfaceCtrl.updateMyStatus(stat)
+		InterfaceCtrl.states.connection = stat;
+		$rootScope.$apply();
+	})
+
+	$rootScope.$on('UpdateControllerAuth', function(event, obj){
+		var myId = ConnectionService.getMyId();
+		if(obj.conn_id==myId){
+			InterfaceCtrl.auth = obj.level;
+			InterfaceCtrl.showAuth = false;
+			InterfaceCtrl.enteredPassword = '';
+			InterfaceCtrl.halt = false;
+		}
+		$rootScope.$apply();
 	})
 
 	$rootScope.$on('UpdateState', function(event, obj){
-		InterfaceCtrl.updateItemStatus(obj);
+		if(obj.node!='connection'){
+			InterfaceCtrl.states[obj.node] = obj.value;
+			$rootScope.$apply();
+		}
+	})
+
+	$rootScope.$on('CodeError', function(){
+		InterfaceCtrl.CodeError = true;
+		$timeout(function(){
+			InterfaceCtrl.halt = false;
+			InterfaceCtrl.CodeError = false;
+		}, 1500);
+	})
+
+	$rootScope.$on('CodeSuccess', function(){
+		InterfaceCtrl.showAuth = false;
+		InterfaceCtrl.enteredPassword = '';
+		InterfaceCtrl.halt = false;
+		$rootScope.$apply();
+	})
+
+	$rootScope.$on('Error', function(event, obj){
+		InterfaceCtrl.showError = obj.message;
+		InterfaceCtrl.halt = true;
+		$rootScope.$apply();
+		$timeout(function(){
+			InterfaceCtrl.showError = null;
+		}, 3000);
+	})
+
+	$rootScope.$on('ClearStates', function(){
+		InterfaceCtrl.auth = 'none';
+		InterfaceCtrl.states = {
+			connection: null,
+			auditTemp: null,
+			domes: null,
+			sweeps: null,
+			emo: null,
+			heaters: null,
+			beams: null,
+			projectorPower: null,
+			projectorShutter: null,
+			extractors: null,
+			lightingScene: null
+		}
+		$rootScope.$apply();
 	})
 
 }

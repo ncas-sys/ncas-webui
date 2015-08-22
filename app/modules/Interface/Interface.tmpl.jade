@@ -1,21 +1,175 @@
-div(class="interface-container" ng-class="{blur: InterfaceCtrl.showOptions==true}")
-	div(class="interface-title")
-		div(class="status-circle" class="{{InterfaceCtrl.status}}")
-		span nCAS Web UI
-	div(class="interface-main-content")
-			ul(class="button-container")
-				li(ng-repeat="(k,v) in InterfaceCtrl.items" class="{{v.class}}" ng-click="InterfaceCtrl.openItemOptions(k)")
-					div(class="content")
-						div(class="title") {{v.title}}
-						div(class="icon")
-							i(class="{{v.icon}}")
-						div(class="status" ng-if="v.key!='lighting'") {{v.status}}
-div(class="item-options" ng-class="{show: InterfaceCtrl.showOptions==true}")
-	div(class="topTitle") {{InterfaceCtrl.optionsTitle}}
-	div(class="bottomButton" ng-click="InterfaceCtrl.showOptions=false") Close
-	div(class="optionsList" id="itemOptionsList")
-		ul
-			li(ng-repeat="(k, opt) in InterfaceCtrl.options" ng-click="InterfaceCtrl.sendMsg(opt)")
-				div(class="icon")
-					i(class="{{opt.icon}}")
-				div(class="title") {{opt.title}}
+div(class="interface-container")
+	div(class="interface-connection-lost" ng-show="InterfaceCtrl.states.connection=='none' || InterfaceCtrl.states.connection==null || InterfaceCtrl.states.connection=='offline' || InterfaceCtrl.states.connection=='detached'")
+		div(class="stripe") Connection Lost
+	div(class="interface-error" ng-show="InterfaceCtrl.showError!=null")
+		div(class="stripe") {{InterfaceCtrl.showError}}
+
+	div(class="interface-confirm" ng-show="InterfaceCtrl.showConfirm==true")
+		div(class="title") Are you sure?
+		div(class="button confirm" ng-click="InterfaceCtrl.confirmAction()") Yes
+		div(class="button cancel" ng-click="InterfaceCtrl.cancelAction()") Cancel
+
+
+	div(class="interface-unauth-dashboard" ng-if="InterfaceCtrl.auth=='none'")
+		ul(class="statuses right" ng-class="{lockedscreen:InterfaceCtrl.locked==true}" ng-click="InterfaceCtrl.authShower()")
+			li(ng-class="{on:InterfaceCtrl.states.domes==1, off:InterfaceCtrl.states.domes==0}")
+				i(class="fa fa-lightbulb-o")
+				span Domes
+			li(ng-class="{on:InterfaceCtrl.states.sweeps==1, off:InterfaceCtrl.states.sweeps==0}")
+				i(class="fa fa-asterisk")
+				span Fans
+			li(ng-class="{on:InterfaceCtrl.states.emo==1, off:InterfaceCtrl.states.emo==0}")
+				i(class="fa fa-power-off")
+				span Emo
+		ul(class="statuses left" ng-class="{lockedscreen:InterfaceCtrl.locked==true}" ng-click="InterfaceCtrl.authShower()")
+			li(ng-class="{on:InterfaceCtrl.states.beams==1, off:InterfaceCtrl.states.beams==0}")
+				i(class="fa fa-fire-extinguisher")
+				span Beams
+			li(ng-class="{on:InterfaceCtrl.states.heaters==1, off:InterfaceCtrl.states.heaters==0}")
+				i(class="fa fa-fire")
+				span Heaters
+			li(ng-class="{on:InterfaceCtrl.states.extractors==1, off:InterfaceCtrl.states.extractors==0}")
+				i(class="fa fa-arrow-up")
+				span Extractors
+
+		div(class="authContainer" ng-if="InterfaceCtrl.showAuth==true && InterfaceCtrl.locked!=true")
+			div(class="authHider left" ng-click="InterfaceCtrl.authHider()")
+			div(class="authHider right" ng-click="InterfaceCtrl.authHider()")
+			ul(class="password-entered" ng-class="{error: InterfaceCtrl.CodeError}")
+				li(ng-class="{star: InterfaceCtrl.enteredPassword.length>=1}")
+				li(ng-class="{star: InterfaceCtrl.enteredPassword.length>=2}")
+				li(ng-class="{star: InterfaceCtrl.enteredPassword.length>=3}")
+				li(ng-class="{star: InterfaceCtrl.enteredPassword.length>=4}")
+			ul(class="password")
+				li(ng-click="InterfaceCtrl.passwordEntry(1)" ng-class="{highlight:InterfaceCtrl.highlight.password1==true}") 1
+				li(ng-click="InterfaceCtrl.passwordEntry(2)" ng-class="{highlight:InterfaceCtrl.highlight.password2==true}") 2
+				li(ng-click="InterfaceCtrl.passwordEntry(3)" ng-class="{highlight:InterfaceCtrl.highlight.password3==true}") 3
+				li(ng-click="InterfaceCtrl.passwordEntry(4)" ng-class="{highlight:InterfaceCtrl.highlight.password4==true}") 4
+				li(ng-click="InterfaceCtrl.passwordEntry(5)" ng-class="{highlight:InterfaceCtrl.highlight.password5==true}") 5
+				li(ng-click="InterfaceCtrl.passwordEntry(6)" ng-class="{highlight:InterfaceCtrl.highlight.password6==true}") 6
+				li(ng-click="InterfaceCtrl.passwordEntry(7)" ng-class="{highlight:InterfaceCtrl.highlight.password7==true}") 7
+				li(ng-click="InterfaceCtrl.passwordEntry(8)" ng-class="{highlight:InterfaceCtrl.highlight.password8==true}") 8
+				li(ng-click="InterfaceCtrl.passwordEntry(9)" ng-class="{highlight:InterfaceCtrl.highlight.password9==true}") 9
+
+			div(class="interface-locked" ng-class="{show:InterfaceCtrl.locked==true}")
+				div(class="text") Panel Locked
+
+	div(class="interface-auth-dashboard" ng-if="InterfaceCtrl.auth!='none' && InterfaceCtrl.showMacros==false && InterfaceCtrl.showLightingPresets==false")
+		ul(class="main-menu")
+			span 
+				li(ng-class="{on:InterfaceCtrl.states.sweeps==1, off:InterfaceCtrl.states.sweeps==0}" ng-click="InterfaceCtrl.Command('SweepsSwitch', 'sweeps')")
+					i(class="fa fa-asterisk")
+					div(ng-if="InterfaceCtrl.states.sweeps!=null") Turn Sweeps
+						span(ng-show="InterfaceCtrl.states.sweeps==0") &nbsp;On
+						span(ng-show="InterfaceCtrl.states.sweeps==1") &nbsp;Off
+					div(ng-if="InterfaceCtrl.states.sweeps==null")
+						span(class='notconnected') sweeps not connected
+				
+				li(ng-class="{on:InterfaceCtrl.states.domes==1, off:InterfaceCtrl.states.domes==0}" ng-click="InterfaceCtrl.Command('DomesSwitch', 'domes')")
+					i(class="fa fa-lightbulb-o")
+					div(ng-if="InterfaceCtrl.states.domes!=null") Turn Domes
+						span(ng-show="InterfaceCtrl.states.domes==0") &nbsp;On
+						span(ng-show="InterfaceCtrl.states.domes==1") &nbsp;Off
+					div(ng-if="InterfaceCtrl.states.domes==null")
+						span(class='notconnected') domes not connected
+				
+				li(ng-class="{on:InterfaceCtrl.states.heaters==1, off:InterfaceCtrl.states.heaters==0}" ng-click="InterfaceCtrl.Command('HeatersSwitch', 'heaters')")
+					i(class="fa fa-fire")
+					div(ng-if="InterfaceCtrl.states.heaters!=null") Turn Heaters
+						span(ng-show="InterfaceCtrl.states.heaters==0") &nbsp;On
+						span(ng-show="InterfaceCtrl.states.heaters==1") &nbsp;Off
+					div(ng-if="InterfaceCtrl.states.heaters==null")
+						span(class='notconnected') heaters not connected
+			span(ng-if="InterfaceCtrl.auth=='admin'")
+				li(ng-class="{on:InterfaceCtrl.states.extractors==1, off:InterfaceCtrl.states.extractors==0}" ng-click="InterfaceCtrl.Command('ExtractorsSwitch', 'extractors')")
+					i(class="fa fa-arrow-up")
+					div(ng-if="InterfaceCtrl.states.extractors!=null") Turn Extractors
+						span(ng-show="InterfaceCtrl.states.extractors==0") &nbsp;On
+						span(ng-show="InterfaceCtrl.states.extractors==1") &nbsp;Off
+					div(ng-if="InterfaceCtrl.states.extractors==null")
+						span(class='notconnected') extractors not connected
+				
+				li(ng-class="{on:InterfaceCtrl.states.beams==1, off:InterfaceCtrl.states.beams==0}" ng-click="InterfaceCtrl.Command('BeamsSwitch', 'beams')")
+					i(class="fa fa-fire-extinguisher")
+					div(ng-if="InterfaceCtrl.states.beams!=null") Turn Beams
+						span(ng-show="InterfaceCtrl.states.beams==0") &nbsp;On
+						span(ng-show="InterfaceCtrl.states.beams==1") &nbsp;Off
+					div(ng-if="InterfaceCtrl.states.beams==null")
+						span(class='notconnected') beams not connected
+				
+				li(ng-class="{on:InterfaceCtrl.states.emo==1, off:InterfaceCtrl.states.emo==0}" ng-click="InterfaceCtrl.Command('EmoSwitch', 'emo')")
+					i(class="fa fa-power-off")
+					div(ng-if="InterfaceCtrl.states.emo!=null") Turn Emo
+						span(ng-show="InterfaceCtrl.states.emo==0") &nbsp;On
+						span(ng-show="InterfaceCtrl.states.emo==1") &nbsp;Off
+					div(ng-if="InterfaceCtrl.states.emo==null")
+						span(class='notconnected') emo not connected
+				li(ng-click="InterfaceCtrl.showMacros=true")
+					i(class="fa fa-safari")
+					div Macros
+				li(ng-click="InterfaceCtrl.showLightingPresets=true")
+					i(class="fa fa-hand-lizard-o")
+					div Lighting Presets
+				li(ng-click="InterfaceCtrl.logOut()")
+					i(class="fa fa-lock")
+					div Lock
+			span(ng-if="InterfaceCtrl.auth=='user'")
+				li(ng-click="InterfaceCtrl.Command('LightingScene4', null)")
+					i 1
+					div Bluey Purpley
+				li(ng-click="InterfaceCtrl.Command('LightingScene2', null)")
+					i(class="fa fa-male")
+					div Walk Through
+				li(ng-click="InterfaceCtrl.Command('LightingScene1', null)")
+					i(class="fa fa-circle")
+					div Blackout
+				li
+				li
+				li(ng-click="InterfaceCtrl.logOut()")
+					i(class="fa fa-lock")
+					div Lock
+
+	div(class="interface-macro-dashboard" ng-if="InterfaceCtrl.showMacros!=false")
+		ul(class="main-menu")
+			li(ng-click="InterfaceCtrl.Command('ChurchOn', null)")
+				i(class="fa fa-lightbulb-o")
+				div All On
+			li(ng-click="InterfaceCtrl.Command('ChurchOff', null)")
+				i(class="fa fa-lightbulb-o")
+				div All Off
+			li(ng-click="InterfaceCtrl.Command('FansOn', null)")
+				i(class="fa fa-lightbulb-o")
+				div Fans On
+			li(ng-click="InterfaceCtrl.Command('FansOff', null)")
+				i(class="fa fa-lightbulb-o")
+				div Fans Off
+			li
+			li
+			li
+			li
+			li(ng-click="InterfaceCtrl.showMacros=false")
+				i(class="fa fa-home")
+				div Back
+
+
+	div(class="interface-lighting-dashboard" ng-if="InterfaceCtrl.showLightingPresets!=false")
+		ul(class="main-menu")
+			li(ng-click="InterfaceCtrl.Command('LightingScene1', null)")
+				i(class="fa fa-lightbulb-o")
+				div All Off
+			li(ng-click="InterfaceCtrl.Command('LightingScene2', null)")
+				i(class="fa fa-lightbulb-o")
+				div Walk Through
+			li(ng-click="InterfaceCtrl.Command('LightingScene3', null)")
+				i(class="fa fa-lightbulb-o")
+				div Back Light
+			li(ng-click="InterfaceCtrl.Command('LightingScene4', null)")
+				i(class="fa fa-lightbulb-o")
+				div Bluey Purpley
+			li
+			li
+			li
+			li
+			li(ng-click="InterfaceCtrl.showLightingPresets=false")
+				i(class="fa fa-home")
+				div Back
