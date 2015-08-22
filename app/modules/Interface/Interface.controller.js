@@ -204,6 +204,9 @@ module.exports = function($rootScope, ConnectionService, $timeout){
 
 	$rootScope.$on('UpdateMyStatus', function(event, stat){
 		InterfaceCtrl.states.connection = stat;
+		if(stat=='offline' || stat=='detached' || stat==null){
+			InterfaceCtrl.auth = 'none';
+		}
 		$rootScope.$apply();
 	})
 
