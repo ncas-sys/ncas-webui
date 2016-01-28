@@ -22,9 +22,9 @@ div(class="interface-container")
 				i(class="fa fa-power-off")
 				span Emo
 		ul(class="statuses left" ng-class="{lockedscreen:InterfaceCtrl.locked==true}" ng-click="InterfaceCtrl.authShower()")
-			li(ng-class="{on:InterfaceCtrl.states.beams==1, off:InterfaceCtrl.states.beams==0}")
-				i(class="fa fa-fire-extinguisher")
-				span Beams
+			li(ng-class="{on:InterfaceCtrl.states.sidelights==1, off:InterfaceCtrl.states.sidelights==0}")
+				i(class="fa fa-fire-paragraph")
+				span Side Lights
 			li(ng-class="{on:InterfaceCtrl.states.heaters==1, off:InterfaceCtrl.states.heaters==0}")
 				i(class="fa fa-fire")
 				span Heaters
@@ -92,11 +92,11 @@ div(class="interface-container")
 				
 				li(ng-class="{on:InterfaceCtrl.states.sidelights==1, off:InterfaceCtrl.states.sidelights==0}" ng-click="InterfaceCtrl.Command('SidelightsSwitch', 'sidelights')")
 					i(class="fa fa-paragraph")
-					div(ng-if="InterfaceCtrl.states.sidelights!=null") Turn Beams
+					div(ng-if="InterfaceCtrl.states.sidelights!=null") Turn Side Lights
 						span(ng-show="InterfaceCtrl.states.sidelights==0") &nbsp;On
 						span(ng-show="InterfaceCtrl.states.sidelights==1") &nbsp;Off
 					div(ng-if="InterfaceCtrl.states.sidelights==null")
-						span(class='notconnected') sidelights not connected
+						span(class='notconnected') side lights not connected
 				
 				li(ng-class="{on:InterfaceCtrl.states.emo==1, off:InterfaceCtrl.states.emo==0}" ng-click="InterfaceCtrl.Command('EmoSwitch', 'emo')")
 					i(class="fa fa-power-off")

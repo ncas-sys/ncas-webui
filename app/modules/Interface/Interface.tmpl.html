@@ -18,7 +18,7 @@
       <li ng-class="{on:InterfaceCtrl.states.emo==1, off:InterfaceCtrl.states.emo==0}"><i class="fa fa-power-off"></i><span>Emo</span></li>
     </ul>
     <ul ng-class="{lockedscreen:InterfaceCtrl.locked==true}" ng-click="InterfaceCtrl.authShower()" class="statuses left">
-      <li ng-class="{on:InterfaceCtrl.states.beams==1, off:InterfaceCtrl.states.beams==0}"><i class="fa fa-fire-extinguisher"></i><span>Beams</span></li>
+      <li ng-class="{on:InterfaceCtrl.states.sidelights==1, off:InterfaceCtrl.states.sidelights==0}"><i class="fa fa-fire-paragraph"></i><span>Side Lights</span></li>
       <li ng-class="{on:InterfaceCtrl.states.heaters==1, off:InterfaceCtrl.states.heaters==0}"><i class="fa fa-fire"></i><span>Heaters</span></li>
       <li ng-class="{on:InterfaceCtrl.states.extractors==1, off:InterfaceCtrl.states.extractors==0}"><i class="fa fa-arrow-up"></i><span>Extractors</span></li>
     </ul>
@@ -66,8 +66,8 @@
           <div ng-if="InterfaceCtrl.states.extractors==null"><span class="notconnected">extractors not connected</span></div>
         </li>
         <li ng-class="{on:InterfaceCtrl.states.sidelights==1, off:InterfaceCtrl.states.sidelights==0}" ng-click="InterfaceCtrl.Command('SidelightsSwitch', 'sidelights')"><i class="fa fa-paragraph"></i>
-          <div ng-if="InterfaceCtrl.states.sidelights!=null">Turn Beams<span ng-show="InterfaceCtrl.states.sidelights==0">&nbsp;On</span><span ng-show="InterfaceCtrl.states.sidelights==1">&nbsp;Off</span></div>
-          <div ng-if="InterfaceCtrl.states.sidelights==null"><span class="notconnected">sidelights not connected</span></div>
+          <div ng-if="InterfaceCtrl.states.sidelights!=null">Turn Side Lights<span ng-show="InterfaceCtrl.states.sidelights==0">&nbsp;On</span><span ng-show="InterfaceCtrl.states.sidelights==1">&nbsp;Off</span></div>
+          <div ng-if="InterfaceCtrl.states.sidelights==null"><span class="notconnected">side lights not connected</span></div>
         </li>
         <li ng-class="{on:InterfaceCtrl.states.emo==1, off:InterfaceCtrl.states.emo==0}" ng-click="InterfaceCtrl.Command('EmoSwitch', 'emo')"><i class="fa fa-power-off"></i>
           <div ng-if="InterfaceCtrl.states.emo!=null">Turn Emo<span ng-show="InterfaceCtrl.states.emo==0">&nbsp;On</span><span ng-show="InterfaceCtrl.states.emo==1">&nbsp;Off</span></div>
