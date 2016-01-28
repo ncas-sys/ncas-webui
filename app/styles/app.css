@@ -55,9 +55,6 @@ html,
 body {
   background-color: #24221f;
 }
-* {
-  cursor: none !important;
-}
 .interface-container .interface-confirm {
   position: fixed;
   left: 0;

@@ -56,7 +56,7 @@ div(class="interface-container")
 
 	div(class="interface-auth-dashboard" ng-if="InterfaceCtrl.auth!='none' && InterfaceCtrl.showMacros==false && InterfaceCtrl.showLightingPresets==false")
 		ul(class="main-menu")
-			span 
+			span(ng-if="InterfaceCtrl.auth=='admin'")
 				li(ng-class="{on:InterfaceCtrl.states.sweeps==1, off:InterfaceCtrl.states.sweeps==0}" ng-click="InterfaceCtrl.Command('SweepsSwitch', 'sweeps')")
 					i(class="fa fa-asterisk")
 					div(ng-if="InterfaceCtrl.states.sweeps!=null") Turn Sweeps
@@ -80,7 +80,8 @@ div(class="interface-container")
 						span(ng-show="InterfaceCtrl.states.heaters==1") &nbsp;Off
 					div(ng-if="InterfaceCtrl.states.heaters==null")
 						span(class='notconnected') heaters not connected
-			span(ng-if="InterfaceCtrl.auth=='admin'")
+			
+			
 				li(ng-class="{on:InterfaceCtrl.states.extractors==1, off:InterfaceCtrl.states.extractors==0}" ng-click="InterfaceCtrl.Command('ExtractorsSwitch', 'extractors')")
 					i(class="fa fa-arrow-up")
 					div(ng-if="InterfaceCtrl.states.extractors!=null") Turn Extractors
@@ -89,13 +90,13 @@ div(class="interface-container")
 					div(ng-if="InterfaceCtrl.states.extractors==null")
 						span(class='notconnected') extractors not connected
 				
-				li(ng-class="{on:InterfaceCtrl.states.beams==1, off:InterfaceCtrl.states.beams==0}" ng-click="InterfaceCtrl.Command('BeamsSwitch', 'beams')")
-					i(class="fa fa-fire-extinguisher")
-					div(ng-if="InterfaceCtrl.states.beams!=null") Turn Beams
-						span(ng-show="InterfaceCtrl.states.beams==0") &nbsp;On
-						span(ng-show="InterfaceCtrl.states.beams==1") &nbsp;Off
-					div(ng-if="InterfaceCtrl.states.beams==null")
-						span(class='notconnected') beams not connected
+				li(ng-class="{on:InterfaceCtrl.states.sidelights==1, off:InterfaceCtrl.states.sidelights==0}" ng-click="InterfaceCtrl.Command('SidelightsSwitch', 'sidelights')")
+					i(class="fa fa-paragraph")
+					div(ng-if="InterfaceCtrl.states.sidelights!=null") Turn Beams
+						span(ng-show="InterfaceCtrl.states.sidelights==0") &nbsp;On
+						span(ng-show="InterfaceCtrl.states.sidelights==1") &nbsp;Off
+					div(ng-if="InterfaceCtrl.states.sidelights==null")
+						span(class='notconnected') sidelights not connected
 				
 				li(ng-class="{on:InterfaceCtrl.states.emo==1, off:InterfaceCtrl.states.emo==0}" ng-click="InterfaceCtrl.Command('EmoSwitch', 'emo')")
 					i(class="fa fa-power-off")
@@ -108,26 +109,65 @@ div(class="interface-container")
 					i(class="fa fa-safari")
 					div Macros
 				li(ng-click="InterfaceCtrl.showLightingPresets=true")
-					i(class="fa fa-hand-lizard-o")
+					i(class="fa fa-sliders")
 					div Lighting Presets
 				li(ng-click="InterfaceCtrl.logOut()")
 					i(class="fa fa-lock")
 					div Lock
+
+
+			
 			span(ng-if="InterfaceCtrl.auth=='user'")
+				li(ng-class="{on:InterfaceCtrl.states.sweeps==1, off:InterfaceCtrl.states.sweeps==0}" ng-click="InterfaceCtrl.Command('SweepsSwitch', 'sweeps')")
+					i(class="fa fa-asterisk")
+					div(ng-if="InterfaceCtrl.states.sweeps!=null") Turn Sweeps
+						span(ng-show="InterfaceCtrl.states.sweeps==0") &nbsp;On
+						span(ng-show="InterfaceCtrl.states.sweeps==1") &nbsp;Off
+					div(ng-if="InterfaceCtrl.states.sweeps==null")
+						span(class='notconnected') sweeps not connected
+				
+				li(ng-class="{on:InterfaceCtrl.states.domes==1, off:InterfaceCtrl.states.domes==0}" ng-click="InterfaceCtrl.Command('DomesSwitch', 'domes')")
+					i(class="fa fa-lightbulb-o")
+					div(ng-if="InterfaceCtrl.states.domes!=null") Turn Domes
+						span(ng-show="InterfaceCtrl.states.domes==0") &nbsp;On
+						span(ng-show="InterfaceCtrl.states.domes==1") &nbsp;Off
+					div(ng-if="InterfaceCtrl.states.domes==null")
+						span(class='notconnected') domes not connected
+				
+				li(ng-class="{on:InterfaceCtrl.states.heaters==1, off:InterfaceCtrl.states.heaters==0}" ng-click="InterfaceCtrl.Command('HeatersSwitch', 'heaters')")
+					i(class="fa fa-fire")
+					div(ng-if="InterfaceCtrl.states.heaters!=null") Turn Heaters
+						span(ng-show="InterfaceCtrl.states.heaters==0") &nbsp;On
+						span(ng-show="InterfaceCtrl.states.heaters==1") &nbsp;Off
+					div(ng-if="InterfaceCtrl.states.heaters==null")
+						span(class='notconnected') heaters not connected
 				li(ng-click="InterfaceCtrl.Command('LightingScene4', null)")
 					i 1
 					div Bluey Purpley
 				li(ng-click="InterfaceCtrl.Command('LightingScene2', null)")
-					i(class="fa fa-male")
+					i(class="fa fa-sliders")
 					div Walk Through
 				li(ng-click="InterfaceCtrl.Command('LightingScene1', null)")
-					i(class="fa fa-circle")
+					i(class="fa fa-sliders")
 					div Blackout
 				li
 				li
 				li(ng-click="InterfaceCtrl.logOut()")
 					i(class="fa fa-lock")
 					div Lock
+
+			span(ng-if="InterfaceCtrl.auth=='super'")
+
+
+
+
+
+
+
+
+
+
+
 
 	div(class="interface-macro-dashboard" ng-if="InterfaceCtrl.showMacros!=false")
 		ul(class="main-menu")

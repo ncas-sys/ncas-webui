@@ -1,7 +1,7 @@
 module.exports = function ($rootScope) {
 	var io = require('socket.io-client');
-	//var socket = io.connect('178.62.100.233:45654');
-	var socket = io.connect('192.168.20.2:5656');
+	var socket = io.connect('ws://178.62.100.233:45654');
+	//var socket = io.connect('192.168.20.2:5656');
 	
 	var myId = null;
 

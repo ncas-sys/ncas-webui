@@ -24,6 +24,7 @@ module.exports = function($rootScope, ConnectionService, $timeout){
 		emo: null,
 		heaters: null,
 		beams: null,
+		sidelights: null,
 		projectorPower: null,
 		projectorShutter: null,
 		extractors: null,
@@ -106,6 +107,25 @@ module.exports = function($rootScope, ConnectionService, $timeout){
 				{
 					'title': 'Turn Off',
 					'emit': 'ExtractorsOff',
+					'icon': 'fa fa-power-off'
+				}
+			]
+		},
+		{
+			key: 'sidelights',
+			icon: 'fa fa-paragraph ',
+			title: 'Side Lights',
+			status: 'not connected',
+			class: "none",
+			options: [
+				{
+					'title': 'Turn On',
+					'emit': 'SideLightsOn',
+					'icon': 'fa fa-power-off'
+				},
+				{
+					'title': 'Turn Off',
+					'emit': 'SideLightsOff',
 					'icon': 'fa fa-power-off'
 				}
 			]
@@ -211,6 +231,7 @@ module.exports = function($rootScope, ConnectionService, $timeout){
 	})
 
 	$rootScope.$on('UpdateControllerAuth', function(event, obj){
+		console.log(obj)
 		var myId = ConnectionService.getMyId();
 		if(obj.conn_id==myId){
 			InterfaceCtrl.auth = obj.level;
@@ -262,6 +283,7 @@ module.exports = function($rootScope, ConnectionService, $timeout){
 			emo: null,
 			heaters: null,
 			beams: null,
+			sidelights: null,
 			projectorPower: null,
 			projectorShutter: null,
 			extractors: null,
