@@ -48,7 +48,7 @@
     </div>
   </div>
   <div ng-if="InterfaceCtrl.auth!='none' &amp;&amp; InterfaceCtrl.showMacros==false &amp;&amp; InterfaceCtrl.showLightingPresets==false" class="interface-auth-dashboard">
-    <ul class="main-menu"><span> 
+    <ul class="main-menu"><span ng-if="InterfaceCtrl.auth=='admin'">
         <li ng-class="{on:InterfaceCtrl.states.sweeps==1, off:InterfaceCtrl.states.sweeps==0}" ng-click="InterfaceCtrl.Command('SweepsSwitch', 'sweeps')"><i class="fa fa-asterisk"></i>
           <div ng-if="InterfaceCtrl.states.sweeps!=null">Turn Sweeps<span ng-show="InterfaceCtrl.states.sweeps==0">&nbsp;On</span><span ng-show="InterfaceCtrl.states.sweeps==1">&nbsp;Off</span></div>
           <div ng-if="InterfaceCtrl.states.sweeps==null"><span class="notconnected">sweeps not connected</span></div>
@@ -60,14 +60,14 @@
         <li ng-class="{on:InterfaceCtrl.states.heaters==1, off:InterfaceCtrl.states.heaters==0}" ng-click="InterfaceCtrl.Command('HeatersSwitch', 'heaters')"><i class="fa fa-fire"></i>
           <div ng-if="InterfaceCtrl.states.heaters!=null">Turn Heaters<span ng-show="InterfaceCtrl.states.heaters==0">&nbsp;On</span><span ng-show="InterfaceCtrl.states.heaters==1">&nbsp;Off</span></div>
           <div ng-if="InterfaceCtrl.states.heaters==null"><span class="notconnected">heaters not connected</span></div>
-        </li></span><span ng-if="InterfaceCtrl.auth=='admin'">
+        </li>
         <li ng-class="{on:InterfaceCtrl.states.extractors==1, off:InterfaceCtrl.states.extractors==0}" ng-click="InterfaceCtrl.Command('ExtractorsSwitch', 'extractors')"><i class="fa fa-arrow-up"></i>
           <div ng-if="InterfaceCtrl.states.extractors!=null">Turn Extractors<span ng-show="InterfaceCtrl.states.extractors==0">&nbsp;On</span><span ng-show="InterfaceCtrl.states.extractors==1">&nbsp;Off</span></div>
           <div ng-if="InterfaceCtrl.states.extractors==null"><span class="notconnected">extractors not connected</span></div>
         </li>
-        <li ng-class="{on:InterfaceCtrl.states.beams==1, off:InterfaceCtrl.states.beams==0}" ng-click="InterfaceCtrl.Command('BeamsSwitch', 'beams')"><i class="fa fa-fire-extinguisher"></i>
-          <div ng-if="InterfaceCtrl.states.beams!=null">Turn Beams<span ng-show="InterfaceCtrl.states.beams==0">&nbsp;On</span><span ng-show="InterfaceCtrl.states.beams==1">&nbsp;Off</span></div>
-          <div ng-if="InterfaceCtrl.states.beams==null"><span class="notconnected">beams not connected</span></div>
+        <li ng-class="{on:InterfaceCtrl.states.sidelights==1, off:InterfaceCtrl.states.sidelights==0}" ng-click="InterfaceCtrl.Command('SidelightsSwitch', 'sidelights')"><i class="fa fa-paragraph"></i>
+          <div ng-if="InterfaceCtrl.states.sidelights!=null">Turn Beams<span ng-show="InterfaceCtrl.states.sidelights==0">&nbsp;On</span><span ng-show="InterfaceCtrl.states.sidelights==1">&nbsp;Off</span></div>
+          <div ng-if="InterfaceCtrl.states.sidelights==null"><span class="notconnected">sidelights not connected</span></div>
         </li>
         <li ng-class="{on:InterfaceCtrl.states.emo==1, off:InterfaceCtrl.states.emo==0}" ng-click="InterfaceCtrl.Command('EmoSwitch', 'emo')"><i class="fa fa-power-off"></i>
           <div ng-if="InterfaceCtrl.states.emo!=null">Turn Emo<span ng-show="InterfaceCtrl.states.emo==0">&nbsp;On</span><span ng-show="InterfaceCtrl.states.emo==1">&nbsp;Off</span></div>
@@ -76,26 +76,38 @@
         <li ng-click="InterfaceCtrl.showMacros=true"><i class="fa fa-safari"></i>
           <div>Macros</div>
         </li>
-        <li ng-click="InterfaceCtrl.showLightingPresets=true"><i class="fa fa-hand-lizard-o"></i>
+        <li ng-click="InterfaceCtrl.showLightingPresets=true"><i class="fa fa-sliders"></i>
           <div>Lighting Presets</div>
         </li>
         <li ng-click="InterfaceCtrl.logOut()"><i class="fa fa-lock"></i>
           <div>Lock</div>
         </li></span><span ng-if="InterfaceCtrl.auth=='user'">
+        <li ng-class="{on:InterfaceCtrl.states.sweeps==1, off:InterfaceCtrl.states.sweeps==0}" ng-click="InterfaceCtrl.Command('SweepsSwitch', 'sweeps')"><i class="fa fa-asterisk"></i>
+          <div ng-if="InterfaceCtrl.states.sweeps!=null">Turn Sweeps<span ng-show="InterfaceCtrl.states.sweeps==0">&nbsp;On</span><span ng-show="InterfaceCtrl.states.sweeps==1">&nbsp;Off</span></div>
+          <div ng-if="InterfaceCtrl.states.sweeps==null"><span class="notconnected">sweeps not connected</span></div>
+        </li>
+        <li ng-class="{on:InterfaceCtrl.states.domes==1, off:InterfaceCtrl.states.domes==0}" ng-click="InterfaceCtrl.Command('DomesSwitch', 'domes')"><i class="fa fa-lightbulb-o"></i>
+          <div ng-if="InterfaceCtrl.states.domes!=null">Turn Domes<span ng-show="InterfaceCtrl.states.domes==0">&nbsp;On</span><span ng-show="InterfaceCtrl.states.domes==1">&nbsp;Off</span></div>
+          <div ng-if="InterfaceCtrl.states.domes==null"><span class="notconnected">domes not connected</span></div>
+        </li>
+        <li ng-class="{on:InterfaceCtrl.states.heaters==1, off:InterfaceCtrl.states.heaters==0}" ng-click="InterfaceCtrl.Command('HeatersSwitch', 'heaters')"><i class="fa fa-fire"></i>
+          <div ng-if="InterfaceCtrl.states.heaters!=null">Turn Heaters<span ng-show="InterfaceCtrl.states.heaters==0">&nbsp;On</span><span ng-show="InterfaceCtrl.states.heaters==1">&nbsp;Off</span></div>
+          <div ng-if="InterfaceCtrl.states.heaters==null"><span class="notconnected">heaters not connected</span></div>
+        </li>
         <li ng-click="InterfaceCtrl.Command('LightingScene4', null)"><i>1</i>
           <div>Bluey Purpley</div>
         </li>
-        <li ng-click="InterfaceCtrl.Command('LightingScene2', null)"><i class="fa fa-male"></i>
+        <li ng-click="InterfaceCtrl.Command('LightingScene2', null)"><i class="fa fa-sliders"></i>
           <div>Walk Through</div>
         </li>
-        <li ng-click="InterfaceCtrl.Command('LightingScene1', null)"><i class="fa fa-circle"></i>
+        <li ng-click="InterfaceCtrl.Command('LightingScene1', null)"><i class="fa fa-sliders"></i>
           <div>Blackout</div>
         </li>
         <li></li>
         <li></li>
         <li ng-click="InterfaceCtrl.logOut()"><i class="fa fa-lock"></i>
           <div>Lock</div>
-        </li></span></ul>
+        </li></span><span ng-if="InterfaceCtrl.auth=='super'"></span></ul>
   </div>
   <div ng-if="InterfaceCtrl.showMacros!=false" class="interface-macro-dashboard">
     <ul class="main-menu">
